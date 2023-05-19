@@ -1,1 +1,3 @@
 .*
+!.vscode/*
+Student/Resources/src/logic/*
