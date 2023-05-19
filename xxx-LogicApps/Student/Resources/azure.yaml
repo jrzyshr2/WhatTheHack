@@ -1,0 +1,14 @@
+name: wth-logicapp
+hooks:
+  preprovision:
+    shell: pwsh
+    continueOnError: false
+    interactive: true
+    run: |
+      $upn=$(az ad signed-in-user show --query userPrincipalName -o tsv)
+      azd env set AZURE_PRINCIPAL_NAME $upn
+services:
+  api:
+    project: ./src/api
+    language: dotnet
+    host: function
