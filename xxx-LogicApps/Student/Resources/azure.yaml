@@ -5,8 +5,11 @@ hooks:
     continueOnError: false
     interactive: true
     run: |
-      $upn=$(az ad signed-in-user show --query userPrincipalName -o tsv)
+      $upn = $(az ad signed-in-user show --query userPrincipalName -o tsv)
       azd env set AZURE_PRINCIPAL_NAME $upn
+
+      $myIP = $(Invoke-WebRequest -Uri "https://api.ipify.org").Content
+      azd env set MY_IP $myIP
 services:
   api:
     project: ./src/api

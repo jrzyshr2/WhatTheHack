@@ -13,6 +13,9 @@
       },
       "sqlAdminLoginObjectId": {
         "value": "${AZURE_PRINCIPAL_ID}"
+      },
+      "sqlClientIpAddress": {
+        "value": "${MY_IP}"
       }
     }
 }

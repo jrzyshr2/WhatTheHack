@@ -11,6 +11,7 @@ param location string
 param resourceGroupName string = ''
 param sqlAdminLoginName string
 param sqlAdminLoginObjectId string
+param sqlClientIpAddress string
 
 var abbrs = loadJsonContent('./abbreviations.json')
 
@@ -122,6 +123,7 @@ module sql 'sql.bicep' = {
     sqlDbName: names.outputs.sqlDbName
     sqlServerName: names.outputs.sqlServerName
     tags: tags
+    sqlClientIpAddress: sqlClientIpAddress
   }
 }
 
