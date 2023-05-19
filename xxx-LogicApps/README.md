@@ -32,6 +32,20 @@ In this hack you will be solving the common business problem that companies in t
 	 - Description of challenge
 - Challenge 08: **[Title of Challenge](Student/Challenge-08.md)**
 	 - Description of challenge
+- Challenge 09: **[Title of Challenge](Student/Challenge-09.md)**
+	 - Description of challenge
+- Challenge 10: **[Title of Challenge](Student/Challenge-10.md)**
+	 - Description of challenge
+- Challenge 11: **[Title of Challenge](Student/Challenge-11.md)**
+	 - Description of challenge
+- Challenge 12: **[Title of Challenge](Student/Challenge-12.md)**
+	 - Description of challenge
+- Challenge 13: **[Title of Challenge](Student/Challenge-13.md)**
+	 - Description of challenge
+- Challenge 14: **[Title of Challenge](Student/Challenge-14.md)**
+	 - Description of challenge
+- Challenge 15: **[Title of Challenge](Student/Challenge-15.md)**
+	 - Description of challenge
 
 ## Prerequisites
 
