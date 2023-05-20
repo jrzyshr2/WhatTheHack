@@ -56,7 +56,6 @@ resource functionApp 'Microsoft.Web/sites@2021-02-01' = {
     keyVaultReferenceIdentity: managedIdentity.id
     httpsOnly: true
     siteConfig: {
-      powerShellVersion: '7.2'
       appSettings: [
         {
           name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
@@ -92,7 +91,7 @@ resource functionApp 'Microsoft.Web/sites@2021-02-01' = {
         }
         {
           name: 'FUNCTIONS_WORKER_RUNTIME'
-          value: 'powershell'
+          value: 'dotnet-isolated'
         }
         {
           name: 'WEBSITE_RUN_FROM_PACKAGE'

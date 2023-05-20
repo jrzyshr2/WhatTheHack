@@ -111,6 +111,8 @@ resource logicAppAppConfigSettings 'Microsoft.Web/sites/config@2022-03-01' = {
     AzureFunctionsJobHost__extensionBundle__id: 'Microsoft.Azure.Functions.ExtensionBundle.Workflows'
     AzureFunctionsJobHost__extensionBundle__version: '[1.*, 2.0.0)'
     STORAGE_ACCOUNT_CONTAINER_NAME: containerName
+    SQL_SERVER_NAME: '${sqlServerName}${environment().suffixes.sqlServerHostname}'
+    SQL_DATABASE_NAME: sqlDbName
   }
 }
 

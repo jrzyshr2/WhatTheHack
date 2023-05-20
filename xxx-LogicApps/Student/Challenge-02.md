@@ -13,11 +13,14 @@ When setting up an IoT device, it is important to understand how 'thingamajigs' 
 CREATE TABLE [dbo].[Thingamajigs](
   [Id] [int] IDENTITY(1,1) NOT NULL,
   [Name] [nvarchar](50) NOT NULL,
-  [Value] [nvarchar](50) NOT NULL);
+  [Value] [nvarchar](50) NOT NULL,
+  [ClientTrackingId] [nvarchar](50),
+  [SAPOrderId] [nvarchar](50)
 GO;
 ```
 - Add a new `Sql Server` action to the workflow to write the data from the JSON input into a table in SQL (`name` & `value`)
   - Use the `Insert row (V2)` Logic Apps action (under `Azure`) & `Logic Apps Managed Identity` connection type to do the insert
+  - Note that the `Server name` is the _FQDN_ of the SQL Server (not just its name)
   - Similar to the blob storage action, prepend a unique identifier to the `Name` column (such as the `Enqueue Time UTC` so you get a unique name each time)
 - Add a new `HTTP response` action to the workflow to return a `200` status code to the caller
 
