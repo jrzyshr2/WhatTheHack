@@ -1,4 +1,6 @@
-.*
+Coach/**/.img/*
 !.vscode/*
+!/.img/*
 Student/Resources/src/logic/*
 __azurite*
+.*
