@@ -10,8 +10,9 @@
   - Set the `Label` to the `name` field from the JSON input
   - Set the `Content` to the `value` field from the JSON input
 - Remove the `Upload blob` step from the original workflow
-- Add a new workflow to receive the message from the Service Bus topic & upload to Blob Storage
-- Test and see if the blob is uploaded to the storage account
+- Add a new workflow to receive the message from the Service Bus topic (via the `storage-subscription`) & upload to Blob Storage
+- Add a new workflow to receive the message from the Service Bus topic (via the `sql-subscription`) & insert into SQL
+- Test and see if the blob is uploaded to the storage account & the SQL database has a new row
 
 ## Success Criteria
 

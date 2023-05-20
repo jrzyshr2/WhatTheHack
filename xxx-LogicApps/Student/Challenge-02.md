@@ -17,7 +17,8 @@ CREATE TABLE [dbo].[Thingamajigs](
 GO;
 ```
 - Add a new `Sql Server` action to the workflow to write the data from the JSON input into a table in SQL (`name` & `value`)
-  - The SQL admin username & password are the same as the SQL server name
+  - Use the `Insert row (V2)` Logic Apps action (under `Azure`) & `Logic Apps Managed Identity` connection type to do the insert
+  - Similar to the blob storage action, prepend a unique identifier to the `Name` column (such as the `Enqueue Time UTC` so you get a unique name each time)
 - Add a new `HTTP response` action to the workflow to return a `200` status code to the caller
 
 ## Success Criteria

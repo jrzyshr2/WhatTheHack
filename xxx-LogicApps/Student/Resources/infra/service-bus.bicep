@@ -18,8 +18,13 @@ resource serviceBusJsonTopic 'Microsoft.ServiceBus/namespaces/topics@2021-11-01'
   parent: serviceBusNamespace
 }
 
-resource serviceBusSubscription 'Microsoft.ServiceBus/namespaces/topics/subscriptions@2021-11-01' = {
-  name: 'json-subscription'
+resource serviceBusStorageSubscription 'Microsoft.ServiceBus/namespaces/topics/subscriptions@2021-11-01' = {
+  name: 'storage-subscription'
+  parent: serviceBusJsonTopic
+}
+
+resource serviceBusSqlSubscription 'Microsoft.ServiceBus/namespaces/topics/subscriptions@2021-11-01' = {
+  name: 'sql-subscription'
   parent: serviceBusJsonTopic
 }
 

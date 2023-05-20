@@ -52,12 +52,6 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
   }
 }
 
-// var fileShareName = toLower(logicAppName)
-
-// resource fileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2021-04-01' = {
-//   #disable-next-line use-parent-property
-//   name: '${storageAccount.name}/default/${fileShareName}'
-// }
 var storageAccountConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${listKeys(storageAccount.id, '2019-06-01').keys[0].value};EndpointSuffix=${environment().suffixes.storage}'
 
 resource storageAccountConnectionStringSecret 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
@@ -120,25 +114,6 @@ resource logicAppAppConfigSettings 'Microsoft.Web/sites/config@2022-03-01' = {
   }
 }
 
-// resource keyVaultAccessPolicy 'Microsoft.KeyVault/vaults/accessPolicies@2022-07-01' = {
-//   parent: keyVault
-//   name: 'add'
-//   properties: {
-//     accessPolicies: [
-//       {
-//         tenantId: subscription().tenantId
-//         objectId: logicApp.identity.principalId
-//         permissions: {
-//           secrets: [
-//             'get'
-//             'list'
-//           ]
-//         }
-//       }
-//     ]
-//   }
-// }
-
 resource diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = {
   name: 'Logging'
   scope: logicApp
@@ -161,4 +136,3 @@ resource diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-pr
 
 output appServicePlanName string = appServicePlan.name
 output logicAppName string = logicApp.name
-// output logicAppIdentityPrincipalId string = logicApp.identity.principalId

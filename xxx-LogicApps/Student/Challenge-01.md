@@ -11,7 +11,9 @@ When setting up an IoT device, it is important to understand how 'thingamajigs' 
 - Create a new Logic App workflow locally in Visual Studio Code named `json`.
 - Add a new `HTTP trigger` to the workflow to accept a JSON payload from the caller.
 - Add a new `Parse JSON` trigger to the workflow (use the `Use sample payload to generate schema` option to generate the schema based upon the JSON payload below)
-- Add a new `Upload blob to storage container` action to the workflow to write a JSON file to the Blob Storage account that ends in `files` and has a container named `json`.
+- Add a new `Upload blob to storage container` action to the workflow to write a JSON file to the Blob Storage account that ends in `files` and has a container named `files`.
+  - Recommendation is to use the `Built-in` connector for `Azure Blob Storage`
+  - Prepend a unique identifier to the `Blob name` of the blob (such as the `Enqueue Time UTC` so you get a unique file name each time)
 - Upload the workflow to the Azure Logic App
 - Call the URL of the Logic App from Postman, passing in the JSON payload below:
 ```json
