@@ -78,6 +78,7 @@ module serviceBusDeployment 'service-bus.bicep' = {
     serviceBusNamespaceName: names.outputs.serviceBusNamespaceName
     location: location
     tags: tags
+    keyVaultName: keyVaultDeployment.outputs.keyVaultName
   }
 }
 
@@ -113,19 +114,23 @@ module logicApp 'logic-app.bicep' = {
   }
 }
 
-module sql 'sql.bicep' = {
-  scope: az.resourceGroup(resourceGroup.name)
-  name: 'sql-deployment'
-  params: {
-    location: location
-    sqlAdminLoginName: sqlAdminLoginName
-    sqlAdminLoginObjectId: sqlAdminLoginObjectId
-    sqlDbName: names.outputs.sqlDbName
-    sqlServerName: names.outputs.sqlServerName
-    tags: tags
-    sqlClientIpAddress: sqlClientIpAddress
-  }
-}
+// module sql 'sql.bicep' = {
+//   scope: az.resourceGroup(resourceGroup.name)
+//   name: 'sql-deployment'
+//   params: {
+//     location: location
+//     sqlAdminLoginName: sqlAdminLoginName
+//     sqlAdminLoginObjectId: sqlAdminLoginObjectId
+//     sqlDbName: names.outputs.sqlDbName
+//     sqlServerName: names.outputs.sqlServerName
+//     tags: tags
+//     sqlClientIpAddress: sqlClientIpAddress
+//     logAnalyticsWorkspaceName: loggingDeployment.outputs.logAnalyticsWorkspaceName
+//     keyVaultName: keyVaultDeployment.outputs.keyVaultName
+//     //managedIdentityName: managedIdentityDeployment.outputs.managedIdentityName
+//     //logicAppIdentityPrincipalId: logicApp.outputs.logicAppIdentityPrincipalId
+//   }
+// }
 
 module storage 'storage.bicep' = {
   scope: az.resourceGroup(resourceGroup.name)

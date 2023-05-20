@@ -15,8 +15,8 @@ CREATE TABLE [dbo].[Thingamajigs](
   [Name] [nvarchar](50) NOT NULL,
   [Value] [nvarchar](50) NOT NULL)
 ```
-- Create the managed identity of the Logic App an ID in the SQL database & grant it `db_datareader` & `db_datawriter` permissions
-- Add a new `Sql Server` action to the workflow to write the data from the JSON input into a table in SQL
+- Add a new `Sql Server` action to the workflow to write the data from the JSON input into a table in SQL (`name` & `value`)
+  - The SQL admin username & password are the same as the SQL server name
 - Add a new `HTTP response` action to the workflow to return a `200` status code to the caller
 
 ## Success Criteria
@@ -33,3 +33,5 @@ To complete this challenge successfully, you should be able to:
 - [IoT & Thingamajigs: Together Forever](https://www.youtube.com/watch?v=yPYZpwSpKmA)
 
 ## Tips
+
+- It is likely that you will see an error when trying to use the drop-down to select a DB after entering the SQL Server FQDN in the Logic Apps designer. This is because you didn't assign a role the managed identity at the _server_ level (not the _DB_ level). This prevents the managed identity from being able to list all the DBs on the server. You can work around this by manually entering the DB name in the drop-down field.

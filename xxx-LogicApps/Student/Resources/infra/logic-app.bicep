@@ -60,6 +60,8 @@ resource storageAccountConnectionStringSecret 'Microsoft.KeyVault/vaults/secrets
   }
 }
 
+var storageAccountConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${listKeys(storageAccount.id, storageAccount.apiVersion).keys[0].value}'
+
 resource logicApp 'Microsoft.Web/sites@2021-02-01' = {
   name: logicAppName
   tags: tags
@@ -80,8 +82,13 @@ resource logicApp 'Microsoft.Web/sites@2021-02-01' = {
     keyVaultReferenceIdentity: managedIdentity.id
     httpsOnly: true
     siteConfig: {
-      netFrameworkVersion: 'v4.0'
+      netFrameworkVersion: 'v6.0'
       functionsRuntimeScaleMonitoringEnabled: false
+      use32BitWorkerProcess: false
+      publicNetworkAccess: 'Enabled'
+      cors: {
+        supportCredentials: false
+      }
       appSettings: []
     }
   }
@@ -97,12 +104,31 @@ resource logicAppAppConfigSettings 'Microsoft.Web/sites/config@2022-03-01' = {
     ApplicationInsightsAgent_EXTENSION_VERSION: '~3'
     XDT_MicrosoftApplicationInsights_Mode: 'Recommended'
     FUNCTIONS_EXTENSION_VERSION: '~4'
-    AzureWebJobsStorage: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=${logicAppStorageAccountConnectionStringSecretName})'
+    AzureWebJobsStorage: storageAccountConnectionString
     FUNCTIONS_WORKER_RUNTIME: 'node'
-    WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: '@Microsoft.KeyVault(VaultName=${keyVault.name};SecretName=${logicAppStorageAccountConnectionStringSecretName})'
+    WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: storageAccountConnectionString
     WEBSITE_CONTENTSHARE: fileShareName
   }
 }
+
+// resource keyVaultAccessPolicy 'Microsoft.KeyVault/vaults/accessPolicies@2022-07-01' = {
+//   parent: keyVault
+//   name: 'add'
+//   properties: {
+//     accessPolicies: [
+//       {
+//         tenantId: subscription().tenantId
+//         objectId: logicApp.identity.principalId
+//         permissions: {
+//           secrets: [
+//             'get'
+//             'list'
+//           ]
+//         }
+//       }
+//     ]
+//   }
+// }
 
 resource diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = {
   name: 'Logging'
@@ -126,3 +152,4 @@ resource diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-pr
 
 output appServicePlanName string = appServicePlan.name
 output logicAppName string = logicApp.name
+// output logicAppIdentityPrincipalId string = logicApp.identity.principalId

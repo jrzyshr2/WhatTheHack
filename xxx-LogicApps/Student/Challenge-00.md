@@ -9,6 +9,7 @@ Thank you for participating in the LogicApps What The Hack. Before you can hack,
 ## Prerequisites
 
 - [Azure Subscription](../../000-HowToHack/WTH-Common-Prerequisites.md#azure-subscription)
+  - You will need _Owner_ permissions on the subscription to complete the hack (due to needing to grant RBAC access to the managed identity of the Logic App)
 - [Managing Cloud Resources](../../000-HowToHack/WTH-Common-Prerequisites.md#managing-cloud-resources)
   - [Azure Portal](../../000-HowToHack/WTH-Common-Prerequisites.md#azure-portal)
   - [Azure CLI](../../000-HowToHack/WTH-Common-Prerequisites.md#azure-cli)
@@ -16,6 +17,7 @@ Thank you for participating in the LogicApps What The Hack. Before you can hack,
     - [Azure PowerShell CmdLets](../../000-HowToHack/WTH-Common-Prerequisites.md#azure-powershell-cmdlets)
   - [Azure Cloud Shell](../../000-HowToHack/WTH-Common-Prerequisites.md#azure-cloud-shell)
 - [.NET 6](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
+- [PowerShell Core](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.3)
 - [Visual Studio Code](../../000-HowToHack/WTH-Common-Prerequisites.md#visual-studio-code)
   - [Logic Apps Standard extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurelogicapps)
 - [Azure Developer CLI](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/install-azd?tabs=winget-windows%2Cbrew-mac%2Cscript-linux&pivots=os-windows)
@@ -30,7 +32,7 @@ Choose 1 of the options below to deploy the resources to your Azure subscription
 
 ### Option1: Deploying using Azure Developer CLI
 
-1.  Deploy the template by running the following Azure Developer CLI commands from the location of the template file:
+1.  Deploy the Azure infrastructure & code by running the following Azure Developer CLI command:
 
 ```shell
 azd up

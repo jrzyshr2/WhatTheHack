@@ -4,17 +4,12 @@
 
 ## Notes & Guidance
 
-This is the only section you need to include.
+SQL needed to create ID for managed identity.
 
-Use general non-bulleted text for the beginning of a solution area for this challenge
+```sql
+CREATE USER [id-5vufwrvt62ry2] FROM EXTERNAL PROVIDER;
+ALTER ROLE db_datareader ADD MEMBER [id-5vufwrvt62ry2];
+ALTER ROLE db_datawriter ADD MEMBER [id-5vufwrvt62ry2];
+GO;
+```
 
-- Then move into bullets
-  - And sub-bullets and even
-    - sub-sub-bullets
-
-Break things apart with more than one bullet list
-
-- Like this
-- One
-- Right
-- Here
