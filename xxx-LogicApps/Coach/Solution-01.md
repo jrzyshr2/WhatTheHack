@@ -4,17 +4,12 @@
 
 ## Notes & Guidance
 
-This is the only section you need to include.
+Check the Application Settings for the Function App to ensure a new App Setting for the Storage Account has been created. It will look something like this:
 
-Use general non-bulleted text for the beginning of a solution area for this challenge
-
-- Then move into bullets
-  - And sub-bullets and even
-    - sub-sub-bullets
-
-Break things apart with more than one bullet list
-
-- Like this
-- One
-- Right
-- Here
+```json
+{
+  "name": "AzureBlob_connectionString",
+  "value": "DefaultEndpointsProtocol=https;AccountName=st5vufwrvt62ry2files;AccountKey=CrTuG1pSX9hrR9QBCXxTdGorFakekeyEfGXDbp03r0i8sRiUVT2O+AStoXeLnw==;EndpointSuffix=core.windows.net",
+  "slotSetting": false
+}
+```

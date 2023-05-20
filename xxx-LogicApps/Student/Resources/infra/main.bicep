@@ -111,26 +111,29 @@ module logicApp 'logic-app.bicep' = {
     logicAppStorageAccountName: names.outputs.logicAppStorageAccountName
     managedIdentityName: managedIdentityDeployment.outputs.managedIdentityName
     tags: tags
+    containerName: storage.outputs.containerName
+    sqlDbName: sql.outputs.sqlDbName
+    sqlServerName: sql.outputs.sqlServerName
   }
 }
 
-// module sql 'sql.bicep' = {
-//   scope: az.resourceGroup(resourceGroup.name)
-//   name: 'sql-deployment'
-//   params: {
-//     location: location
-//     sqlAdminLoginName: sqlAdminLoginName
-//     sqlAdminLoginObjectId: sqlAdminLoginObjectId
-//     sqlDbName: names.outputs.sqlDbName
-//     sqlServerName: names.outputs.sqlServerName
-//     tags: tags
-//     sqlClientIpAddress: sqlClientIpAddress
-//     logAnalyticsWorkspaceName: loggingDeployment.outputs.logAnalyticsWorkspaceName
-//     keyVaultName: keyVaultDeployment.outputs.keyVaultName
-//     //managedIdentityName: managedIdentityDeployment.outputs.managedIdentityName
-//     //logicAppIdentityPrincipalId: logicApp.outputs.logicAppIdentityPrincipalId
-//   }
-// }
+module sql 'sql.bicep' = {
+  scope: az.resourceGroup(resourceGroup.name)
+  name: 'sql-deployment'
+  params: {
+    location: location
+    sqlAdminLoginName: sqlAdminLoginName
+    sqlAdminLoginObjectId: sqlAdminLoginObjectId
+    sqlDbName: names.outputs.sqlDbName
+    sqlServerName: names.outputs.sqlServerName
+    tags: tags
+    sqlClientIpAddress: sqlClientIpAddress
+    logAnalyticsWorkspaceName: loggingDeployment.outputs.logAnalyticsWorkspaceName
+    keyVaultName: keyVaultDeployment.outputs.keyVaultName
+    managedIdentityName: managedIdentityDeployment.outputs.managedIdentityName
+    //logicAppIdentityPrincipalId: logicApp.outputs.logicAppIdentityPrincipalId
+  }
+}
 
 module storage 'storage.bicep' = {
   scope: az.resourceGroup(resourceGroup.name)

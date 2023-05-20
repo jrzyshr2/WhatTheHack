@@ -13,7 +13,8 @@ When setting up an IoT device, it is important to understand how 'thingamajigs' 
 CREATE TABLE [dbo].[Thingamajigs](
   [Id] [int] IDENTITY(1,1) NOT NULL,
   [Name] [nvarchar](50) NOT NULL,
-  [Value] [nvarchar](50) NOT NULL)
+  [Value] [nvarchar](50) NOT NULL);
+GO;
 ```
 - Add a new `Sql Server` action to the workflow to write the data from the JSON input into a table in SQL (`name` & `value`)
   - The SQL admin username & password are the same as the SQL server name

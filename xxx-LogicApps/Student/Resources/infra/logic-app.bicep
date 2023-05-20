@@ -8,6 +8,9 @@ param keyVaultName string
 param logicAppStorageAccountName string
 param logicAppStorageAccountConnectionStringSecretName string
 param tags object
+param containerName string
+param sqlServerName string
+param sqlDbName string
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2021-09-30-preview' existing = {
   name: managedIdentityName
@@ -35,40 +38,43 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2021-03-01' = {
   properties: {}
 }
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
+#disable-next-line BCP035
+resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
   name: logicAppStorageAccountName
   location: location
   sku: {
     name: 'Standard_LRS'
   }
-  kind: 'StorageV2'
+  properties: {
+    supportsHttpsTrafficOnly: true
+    minimumTlsVersion: 'TLS1_2'
+    defaultToOAuthAuthentication: true
+  }
 }
 
-var fileShareName = toLower(logicAppName)
+// var fileShareName = toLower(logicAppName)
 
-resource fileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2021-04-01' = {
-  #disable-next-line use-parent-property
-  name: '${storageAccount.name}/default/${fileShareName}'
-}
+// resource fileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2021-04-01' = {
+//   #disable-next-line use-parent-property
+//   name: '${storageAccount.name}/default/${fileShareName}'
+// }
+var storageAccountConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${listKeys(storageAccount.id, '2019-06-01').keys[0].value};EndpointSuffix=${environment().suffixes.storage}'
 
 resource storageAccountConnectionStringSecret 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
   parent: keyVault
   name: logicAppStorageAccountConnectionStringSecretName
   properties: {
     #disable-next-line use-resource-symbol-reference
-    value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${listKeys(storageAccount.id, storageAccount.apiVersion).keys[0].value}'
+    value: storageAccountConnectionString
   }
 }
 
-var storageAccountConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${listKeys(storageAccount.id, storageAccount.apiVersion).keys[0].value}'
-
-resource logicApp 'Microsoft.Web/sites@2021-02-01' = {
+resource logicApp 'Microsoft.Web/sites@2018-11-01' = {
   name: logicAppName
-  tags: tags
+  tags: union(tags, { 'hidden-link: /app-insights-resource-id': appInsights.id })
   location: location
   kind: 'functionapp,workflowapp'
   dependsOn: [
-    fileShare
     storageAccountConnectionStringSecret
   ]
   identity: {
@@ -80,16 +86,17 @@ resource logicApp 'Microsoft.Web/sites@2021-02-01' = {
   properties: {
     serverFarmId: appServicePlan.id
     keyVaultReferenceIdentity: managedIdentity.id
+    clientAffinityEnabled: false
+    publicNetworkAccess: 'Enabled'
+    virtualNetworkSubnetId: null
     httpsOnly: true
     siteConfig: {
       netFrameworkVersion: 'v6.0'
-      functionsRuntimeScaleMonitoringEnabled: false
       use32BitWorkerProcess: false
-      publicNetworkAccess: 'Enabled'
-      cors: {
-        supportCredentials: false
-      }
+      ftpsState: 'FtpsOnly'
+      cors: {}
       appSettings: []
+      functionsRuntimeScaleMonitoringEnabled: false
     }
   }
 }
@@ -101,13 +108,15 @@ resource logicAppAppConfigSettings 'Microsoft.Web/sites/config@2022-03-01' = {
     APP_KIND: 'workflowApp'
     APPINSIGHTS_INSTRUMENTATIONKEY: appInsights.properties.InstrumentationKey
     APPLICATIONINSIGHTS_CONNECTION_STRING: appInsights.properties.ConnectionString
-    ApplicationInsightsAgent_EXTENSION_VERSION: '~3'
-    XDT_MicrosoftApplicationInsights_Mode: 'Recommended'
     FUNCTIONS_EXTENSION_VERSION: '~4'
     AzureWebJobsStorage: storageAccountConnectionString
     FUNCTIONS_WORKER_RUNTIME: 'node'
     WEBSITE_CONTENTAZUREFILECONNECTIONSTRING: storageAccountConnectionString
-    WEBSITE_CONTENTSHARE: fileShareName
+    WEBSITE_NODE_DEFAULT_VERSION: '~16'
+    WEBSITE_CONTENTSHARE: logicAppName
+    AzureFunctionsJobHost__extensionBundle__id: 'Microsoft.Azure.Functions.ExtensionBundle.Workflows'
+    AzureFunctionsJobHost__extensionBundle__version: '[1.*, 2.0.0)'
+    STORAGE_ACCOUNT_CONTAINER_NAME: containerName
   }
 }
 
