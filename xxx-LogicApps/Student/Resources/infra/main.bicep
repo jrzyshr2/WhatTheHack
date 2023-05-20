@@ -127,5 +127,16 @@ module sql 'sql.bicep' = {
   }
 }
 
+module storage 'storage.bicep' = {
+  scope: az.resourceGroup(resourceGroup.name)
+  name: 'storage-deployment'
+  params: {
+    location: location
+    storageAccountName: names.outputs.storageAccountName
+    tags: tags
+    containerName: names.outputs.containerName
+  }
+}
+
 output AZURE_LOCATION string = location
 output AZURE_TENANT_ID string = tenant().tenantId

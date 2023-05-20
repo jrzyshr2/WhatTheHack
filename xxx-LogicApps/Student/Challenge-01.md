@@ -10,10 +10,16 @@ When setting up an IoT device, it is important to understand how 'thingamajigs' 
 
 - Create a new Logic App workflow locally in Visual Studio Code named `json`.
 - Add a new `HTTP trigger` to the workflow to accept a JSON payload from the caller.
-- Add a new `Parse JSON` trigger to the workflow
-- Add a new `Write to blob storage` action to the workflow to write a JSON file to Blob Storage
-- Test the workflow by calling the HTTP trigger with a JSON payload locally
-- Upload the workflow to the Azure Logic App & ensure it still works
+- Add a new `Parse JSON` trigger to the workflow (use the `Use sample payload to generate schema` option to generate the schema based upon the JSON payload below)
+- Add a new `Upload blob to storage container` action to the workflow to write a JSON file to the Blob Storage account that ends in `files` and has a container named `json`.
+- Upload the workflow to the Azure Logic App
+- Call the URL of the Logic App from Postman, passing in the JSON payload below:
+```json
+{
+    "name": "Thingamajig",
+    "value": "1234"
+}
+```
 
 ## Success Criteria
 
@@ -26,4 +32,5 @@ To complete this challenge successfully, you should be able to:
 
 ## Tips
 
-- IoTDevices can fail from a broken heart if they are not together with their thingamajig. Your device will display a broken heart emoji on its screen if this happens.
+- Make sure the `Azurite` emulator is running before opening the Visual Studio Code Logic Apps designer.
+  - In Visual Studio Code, press `Ctrl+Shift+P` and type `Azurite: Start` to start the emulator.
