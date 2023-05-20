@@ -1,3 +1,4 @@
 .*
 !.vscode/*
 Student/Resources/src/logic/*
+__azurite*
