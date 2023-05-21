@@ -4,6 +4,8 @@
 
 ## Introduction
 
+smoe mispellt wrds here
+
 Logs show everything that is happening to your resources at the API level. Platform logs from Azure in Datadog provide insights into subscription-level events. This includes information such as when a resource is modified or when a virtual machine is started.
 
 In the eShopOnWeb Azure environment, there are three compute resources to be aware of:
